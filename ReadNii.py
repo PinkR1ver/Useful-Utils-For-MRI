@@ -11,7 +11,8 @@ def read_nii_image(niifile):
         for file in files:
             if '.nii.gz' in file:
                 savePath = os.path.join(root, file.replace('.nii.gz', ''))
-                os.mkdir(savePath)
+                if not os.path.isdir(savePath):
+                    os.mkdir(savePath)
                 # read nii files
                 img_path = os.path.join(root, file)
                 img = nib.load(img_path)
