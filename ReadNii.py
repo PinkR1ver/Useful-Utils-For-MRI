@@ -10,8 +10,8 @@ def read_nii_image(niifile):
     for root, dirs, files in os.walk(niifile):
         for file in files:
             if '.nii.gz' in file:
-                imagePath = os.path.join(root, file.replace('.nii.gz', ''))
-                maskPath = os.path.join(root, file.replace('.nii.gz', '_masks'))
+                savePath = os.path.join(root, file.replace('.nii.gz', ''))
+                os.mkdir(savePath)
                 # read nii files
                 img_path = os.path.join(root, file)
                 img = nib.load(img_path)
@@ -21,10 +21,7 @@ def read_nii_image(niifile):
                 (x, y, z) = img.shape
                 for i in range(x):
                     slice = img_fdata[i, :, :]
-                    if 'masks' in file:
-                        imageio.imwrite(os.path.join(maskPath, '{}_{}.png'.format(file.split('.',1)[0].replace('_masks',''),i)),slice)
-                    else:
-                        imageio.imwrite(os.path.join(imagePath, '{}_{}.png'.format(file.split('.',1)[0],i)),slice)
+                    imageio.imwrite(os.path.join(savePath, '{}_{}.png'.format(file, i)),slice)
 
 if __name__ == '__main__':
-    pass
+    read_nii_image(r'example')
